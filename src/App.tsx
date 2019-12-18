@@ -1,26 +1,47 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux'
+import { State, actions, store } from './store'
+import { Button, ThemeProvider } from 'rmwc'
 
-const App: React.FC = () => {
+interface Props
+  { count: number
+  , increment: any
+  , decrement: any
+  }
+
+const App = ( props : Props ) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider
+      options={
+        { primary: '#61DAFB'
+        , secondary: 'blue'
+        }
+      }
+    >
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <div>
+            <Button raised icon="add" onClick={props.increment}>Increment</Button>
+            <Button raised icon="remove" onClick={props.decrement}>Decrement</Button>
+          </div>
+          <p>Count: {props.count}</p>
+        </header>
+      </div>
+    </ThemeProvider>
   );
 }
 
-export default App;
+const mapStateToProps = (state: State) => (
+  { count: state
+  }
+);
+
+const mapDispatchToProps = actions;
+
+export default connect
+  ( mapStateToProps
+  , mapDispatchToProps
+  )(App);
