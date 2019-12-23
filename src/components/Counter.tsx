@@ -2,47 +2,22 @@ import React from 'react'
 import { Action, PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Button } from 'rmwc'
 import { connect } from 'react-redux'
-import * as R from 'ramda'
+import { State, actions } from '../store'
 
 
-export interface State
-    { count: object
-    }
+interface ownProps {
+    id : string
+}
 
+const mapStateToProps = (state: State, ownProps: ownProps) => ({
+    value: state.counters[ownProps.id]
+})
 
-const initialState: State =
-    { count: {}
-    }
-
-
-const reducers =
-    { increment: (s: State, a: PayloadAction<string>) : State => {
-        const newState = R.over( R.lensPath(['count', a.payload]), (count: number) => count + 1 || 0, s)
-        return newState
-        }
-    , decrement: (s: State, a: PayloadAction<string>) : State => {
-        const newState = R.over( R.lensPath(['count', a.payload]), (count: number) => count - 1 || 0, s)
-        return newState
-        }
-    }
-
-
-export const slice = createSlice(
-    { name: 'counter'
-    , initialState
-    , reducers
-    }
-);
-
-
-const mapStateToProps = (state: State) => state
-  
-
-const mapDispatchToProps = slice.actions;
+const mapDispatchToProps = actions;
 
 
 interface Props {
-    count : any
+    value : number
     id : string
     decrement(id: string): Action<string>
     increment(id: string): Action<string>
@@ -56,13 +31,13 @@ export const component = (props: Props) => {
                 <Button raised icon="add" onClick={() => props.increment(props.id)}>Increment</Button>
                 <Button raised icon="remove" onClick={() => props.decrement(props.id)}>Decrement</Button>
             </div>
-            <p>Count: {props.count[props.id]}</p>
+            <p>Count: {props.value}</p>
         </div>
     );
 }
 
 
 export default connect
-( mapStateToProps
-, mapDispatchToProps
-)(component);
+    ( mapStateToProps
+    , mapDispatchToProps
+    )(component);

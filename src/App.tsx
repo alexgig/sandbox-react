@@ -4,14 +4,12 @@ import './App.css';
 import { connect } from 'react-redux'
 import { ThemeProvider } from 'rmwc'
 import Counter from './components/Counter'
-
-
-type State =
-  {}
-
+import { State } from './store'
+import * as R from 'ramda'
 
 interface Props
-  {}
+  { count: any
+  }
 
 
 const App = (props: Props) => {
@@ -23,6 +21,7 @@ const App = (props: Props) => {
         </header>
         <Counter id="counter-1"></Counter>
         <Counter id="counter-2"></Counter>
+        <div>Total: {R.sum(R.values(props.count))}</div>
       </div>
     </ThemeProvider>
   );
@@ -30,7 +29,8 @@ const App = (props: Props) => {
 
 
 const mapStateToProps = (state: State) => (
-  {}
+  { count: state.counters
+  }
 );
 
 
