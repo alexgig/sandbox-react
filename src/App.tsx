@@ -7,8 +7,18 @@ import Counter from './components/Counter'
 import { State } from './store'
 import * as R from 'ramda'
 
+
+const mapStateToProps = (state: State) => (
+  { counters: state.counters
+  }
+);
+
+
+const mapDispatchToProps = {};
+
+
 interface Props
-  { count: any
+  { counters: any
   }
 
 
@@ -21,20 +31,11 @@ const App = (props: Props) => {
         </header>
         <Counter id="counter-1"></Counter>
         <Counter id="counter-2"></Counter>
-        <div>Total: {R.sum(R.values(props.count))}</div>
+        <div>Total: {R.sum(R.values(props.counters))}</div>
       </div>
     </ThemeProvider>
   );
 }
-
-
-const mapStateToProps = (state: State) => (
-  { count: state.counters
-  }
-);
-
-
-const mapDispatchToProps = {};
 
 
 export default connect

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Action, PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { Action } from '@reduxjs/toolkit'
 import { Button } from 'rmwc'
 import { connect } from 'react-redux'
 import { State, actions } from '../store'
