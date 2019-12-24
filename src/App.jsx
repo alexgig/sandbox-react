@@ -4,11 +4,11 @@ import './App.css';
 import { connect } from 'react-redux'
 import { ThemeProvider } from 'rmwc'
 import Counter from './components/Counter'
-import { State } from './store'
+import User from './components/User'
 import * as R from 'ramda'
 
 
-const mapStateToProps = (state: State) => (
+const mapStateToProps = (state) => (
   { counters: state.counters
   }
 );
@@ -17,12 +17,7 @@ const mapStateToProps = (state: State) => (
 const mapDispatchToProps = {};
 
 
-interface Props
-  { counters: any
-  }
-
-
-const App = (props: Props) => {
+const App = (props) => {
   return (
     <ThemeProvider options={ {primary: '#61DAFB', secondary: 'blue'} }>
       <div className="App">
@@ -33,6 +28,7 @@ const App = (props: Props) => {
         <Counter id="counter-2"></Counter>
         <div>Total: {R.sum(R.values(props.counters))}</div>
       </div>
+      <User />
     </ThemeProvider>
   );
 }

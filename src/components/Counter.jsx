@@ -1,30 +1,18 @@
 import React from 'react'
-import { Action } from '@reduxjs/toolkit'
 import { Button } from 'rmwc'
 import { connect } from 'react-redux'
-import { State, actions } from '../store'
+import { actions } from '../store'
 
 
-interface ownProps {
-    id : string
-}
-
-const mapStateToProps = (state: State, ownProps: ownProps) => ({
+const mapStateToProps = (state, ownProps) => ({
     value: state.counters[ownProps.id]
 })
+
 
 const mapDispatchToProps = actions;
 
 
-interface Props {
-    value : number
-    id : string
-    decrement(id: string): Action<string>
-    increment(id: string): Action<string>
-}
-
-
-export const component = (props: Props) => {
+export const component = (props) => {
     return (
         <div>
             <div>
