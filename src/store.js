@@ -5,6 +5,7 @@ import axios from 'axios'
 
 const initialState =
     { counters: {}
+    , fetching : false
     , username: ""
     }
 
@@ -21,11 +22,27 @@ const reducers =
     , fetchUser: (s) => {
         console.log(`Fetching: ${s.username}`)
         axios.get(`https://api.github.com/users/${s.username}`)
-            .then( response => store.dispatch(actions.fetchedUser(response.data)))
+            .then( response => {
+                console.log( response )
+                store.dispatch(actions.fetchedUser())
+            })
+            .catch( error => {
+                if (error.response)
+                    console.log(`Response:`, error.response)
+                else if (error.request)
+                    console.log(`Request:`, error.request)
+                else
+                    console.log(`Error:`, error.message)
+                console.log(`Config:`, error.config)
+                store.dispatch(actions.fetchedUser())
+            })
+        const newState = R.merge(s, {fetching: true})
+        return newState
     }
-    , fetchedUser: (s, a) => {
+    , fetchedUser: (s) => {
         console.log(`Fetched: ${s.username}`)
-        console.log(a.payload)
+        const newState = R.merge(s, {fetching: false})
+        return newState
     }
     , setUsername: (s, a) => {
         const newState = R.set( R.lensPath(['username']), a.payload, s)
