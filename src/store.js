@@ -7,10 +7,12 @@ const initialState =
     { counters: {}
     , fetching : false
     , username: ""
+    , user: {}
     }
 
 
 const reducers =
+    // Counter Component
     { increment: (s, a) => {
         const newState = R.over( R.lensPath(['counters', a.payload]), (count) => count + 1 || 0, s)
         return newState
@@ -19,12 +21,12 @@ const reducers =
         const newState = R.over( R.lensPath(['counters', a.payload]), (count) => count - 1 || 0, s)
         return newState
     }
+    // User Component
     , fetchUser: (s) => {
         console.log(`Fetching: ${s.username}`)
         axios.get(`https://api.github.com/users/${s.username}`)
             .then( response => {
-                console.log( response )
-                store.dispatch(actions.fetchedUser())
+                store.dispatch(actions.fetchedUser(response.data))
             })
             .catch( error => {
                 if (error.response)
@@ -34,14 +36,13 @@ const reducers =
                 else
                     console.log(`Error:`, error.message)
                 console.log(`Config:`, error.config)
-                store.dispatch(actions.fetchedUser())
             })
-        const newState = R.merge(s, {fetching: true})
+        const newState = R.merge(s, {fetching: true, user: {}})
         return newState
     }
-    , fetchedUser: (s) => {
+    , fetchedUser: (s, a) => {
         console.log(`Fetched: ${s.username}`)
-        const newState = R.merge(s, {fetching: false})
+        const newState = R.merge(s, {fetching: false, user: a.payload})
         return newState
     }
     , setUsername: (s, a) => {
@@ -52,7 +53,7 @@ const reducers =
 
 
 export const slice = createSlice(
-    { name: 'counter'
+    { name: 'main'
     , initialState
     , reducers
     }

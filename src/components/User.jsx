@@ -7,6 +7,7 @@ import { actions } from '../store'
 const mapStateToProps = (state, ownProps) => (
     { fetching: state.fetching
     , username: state.username
+    , user: state.user
     }
 )
 
@@ -23,6 +24,7 @@ export const component = (props) => {
             <TextField label="Username" onChange={(e) => props.setUsername(e.target.value)} value={props.username} />
             <Button raised icon="user" onClick={() => props.fetchUser()}>Look up</Button>
             <p>Fetching: { props.fetching ? "True" : "False" }</p>
+            <p>Name: { props.user.name} </p>
         </div>
     );
 }
