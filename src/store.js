@@ -1,5 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import * as R from 'ramda'
+import axios from 'axios'
 
 
 const initialState =
@@ -19,6 +20,12 @@ const reducers =
     }
     , fetchUser: (s) => {
         console.log(`Fetching: ${s.username}`)
+        axios.get(`https://api.github.com/users/${s.username}`)
+            .then( response => store.dispatch(actions.fetchedUser(response.data)))
+    }
+    , fetchedUser: (s, a) => {
+        console.log(`Fetched: ${s.username}`)
+        console.log(a.payload)
     }
     , setUsername: (s, a) => {
         const newState = R.set( R.lensPath(['username']), a.payload, s)
